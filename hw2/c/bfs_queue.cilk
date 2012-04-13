@@ -17,16 +17,34 @@ BfsQueue :: BfsQueue(int procs, int n ) {
 
   nseg = n;
   p = procs;
-  
+  flags = vector<int>(n + 1);
 
   for (int i = 0; i < p; i++) {
 	queues.push_back(queue<int>());
   }
+
+
+  for (int i = 0; i < n + 1; i++) {
+	flags[i] = -1;
+  }
+
 }
 
 void BfsQueue::enque(int i, int value) {
   if (i < p) {
-	queues[i].push(value);
+
+	// Test - Set - Test in the flags vector 
+	// before adding it in any of the queue
+	// avoids expanding of node multiple 
+	// times
+	
+	if (flags[value] == -1) {
+	  flags[value] = i;
+	  
+	  if (flags[value] == i) {
+		queues[i].push(value);
+	  }
+	}
 		
   }
 }

@@ -11,4 +11,4 @@ $(TARGET): $(SRC)
 		$(CILKPP) $(SRC) $(LIBARG) -o $@
 
 clean:
-		rm -f $(TARGET)~ 
+		rm -f $(TARGET)~ $(TARGET)

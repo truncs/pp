@@ -18,6 +18,7 @@ class BfsQueue {
   int p;
   int seg;
   cilk::mutex m;
+  vector<int> flags;
 
 public:
   BfsQueue(int p, int n);
