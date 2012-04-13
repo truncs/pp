@@ -25,14 +25,14 @@ BfsQueue :: BfsQueue(int procs, int n ) {
 }
 
 void BfsQueue::enque(int i, int value) {
-  if (i < procs) {
+  if (i < p) {
 	queues[i].push(value);
 		
   }
 }
 
 void BfsQueue::set_segment_size() {
-  int size = getSIze()
+  int size = getSize();
   int temp = nseg / size;
   seg = temp == 0 ? size : temp;
 }
@@ -45,7 +45,7 @@ vector<int> *  BfsQueue::nextSegment() {
 	for (int i = 0; i <p; i++) {
 	  if (!queues[i].empty()) {
         //  Decrement the counter
-		k = min(queues[i].size(); seg);
+		int k = min((int)queues[i].size(), seg);
 		for (int j = 0; j <= k; j++) {
 		  vector<int> S = new vector<int>();
 		  S.push_back(queues[i].front());

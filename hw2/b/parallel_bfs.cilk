@@ -51,17 +51,17 @@ void parallel_bfs(int source_index, int n, vector<vector<int> > & tau) {
   
   d[source_index] = 0;
   
-  BfsQueue qin = new BfsQueue(P, NSEG);
-  BfsQueue  qout = new BfsQueue(P, NSEG);
+  BfsQueue * qin = new BfsQueue(P, NSEG);
+  BfsQueue  * qout = new BfsQueue(P, NSEG);
 
    qin->enque(0, source_index);
 
    while (qin->getSize() != 0) {
 	 qin->set_segment_size();
-	 for (int i = 0 ; i < p - 1; i++) {
+	 for (int i = 0 ; i < P - 1; i++) {
 	   cilk_spawn parallel_bfs_thread(*qin, *qout, i, d, tau);
 	}
-	 parallel_bfs_thread(*qin, *qout, i, d, tau);
+	 parallel_bfs_thread(*qin, *qout, P -1, d, tau);
 	 cilk_sync;
 	 qin = qout;
 	 delete(qout);
