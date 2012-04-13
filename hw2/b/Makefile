@@ -3,12 +3,12 @@
 CILKPP  = cilk++
 LIBARG  = -O1 -g -lcilkutil
 TARGET  = parallel_bfsb
-SRC     = $(addsuffix .cilk,$(TARGET))
+SRC     = parallel_bfs.cilk bfs_queue.cilk
 
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-        $(CILKPP) $(SRC) $(LIBARG) -o $@
+		$(CILKPP) $(SRC) $(LIBARG) -o $@
 
 clean:
-        rm -f $(TARGET)~ 
+		rm -f $(TARGET)~ 
