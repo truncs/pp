@@ -40,7 +40,7 @@ void BfsQueue::set_segment_size() {
 vector<int> *  BfsQueue::nextSegment() {
 
   int  size =getSize();
-  m.lock();
+  // m.lock();
   if (size > 0) {
 	for (int i = 0; i <p; i++) {
 	  if (!queues[i].empty()) {
@@ -60,7 +60,7 @@ vector<int> *  BfsQueue::nextSegment() {
 	}
   }
 
-  m.unlock();
+  //m.unlock();
   return NULL;
 
 }
