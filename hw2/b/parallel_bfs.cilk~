@@ -1,0 +1,207 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <queue>
+#include <cstdlib>
+#include <algorithm>
+#include <cilk.h>
+
+#define P 12
+#define NSEG 5
+
+using namespace std;
+
+class BfsQueue {
+  vector<queue<int> > queues;
+  int nseg;
+  int size;
+  int p;
+  int seg;
+  cilk::mutex m;
+
+public:
+  BfsQueue(int p);
+  void enque(int i, int value);
+  vector<int> * deque();
+  void set_segment_size();
+  
+};
+
+BfsQueue :: BfsQueue(int p ) {
+  size = 0;
+  nseg = NSEG;
+  p = P;
+  
+  procs = p
+  for (int i = 0; i < p; i++) {
+	queues.push_back(queue<int>());
+  }
+}
+
+void BfsQueue::enque(int i, int value) {
+  if (i < procs) {
+	queues[i].push(value);
+	size += 1;
+	
+  }
+}
+
+void BfsQueue::set_segment_size() {
+  int temp = nseg / size;
+  seg = temp == 0 ? size ? temp;
+}
+
+vector<int> *  BfsQueue::deque() {
+
+  // TODO : locking stuff
+  m.lock()
+  if (size > 0) {
+	for (int i = 0; i <p; i++) {
+	  if (!queues[i].empty()) {
+		k = min(queues[i].size(); seg);
+		for (int j = 0; j <= k; j++) {
+		  vector<int> S = new vector<int>();
+		  S.push_back(queues[i].front());
+		  queues[i].pop();
+		  // TODO remember to free S
+		  m.unlock();
+		  return S;
+		}
+		
+
+	  }
+	}
+  }
+
+  m.unlock();
+  return NULL;
+
+}
+
+
+
+void parallel_bfs_thread(BfsQueue& qin, BfsQueue& qout, int p;int * d, vector<vector<int> > & tau) {
+  vector<int> * S;
+  while ((S = qin.deque()) != NULL) {
+	for (int i = 0; i < S->size(); i++) {
+	  int u = S->at(i);
+	  for (int j = 0; j < tau[u].size(); j++) {
+
+		int v = tau[u][j];
+
+		if (d[v] == -1) {
+		  d[v] = d[u] + 1;
+		  qout.enque(p, v);
+		}
+	  }
+
+
+	}
+  }
+}
+
+void serial_bfs(int source_index, int n, vector<vector<int> > & tau){
+
+  queue<int> bfs_queue;
+  vector<int> d;
+
+  vector<queue<int> > qout(p);
+
+  for (int i = 0; i <= n; i++ ) {
+	d.push_back(-1);
+  }
+  
+  d[source_index] = 0;
+  
+  bfs_queue.push(source_index);
+
+  while (!bfs_queue.empty()) {
+	int u  = bfs_queue.front();
+	bfs_queue.pop();
+	for (int j = 0; j < tau[u].size(); j++) {
+
+	  int v = tau[u][j];
+
+	  if (d[v] == -1) {
+		d[v] = d[u] + 1;
+		bfs_queue.push(v);
+	  }
+	}
+
+  }
+  
+  long int checksum = 0;
+  int max_depth = 0;
+
+  for (int i = 1; i <= n; i++ ) {
+	if (max_depth < d[i]){
+	  max_depth = d[i];
+	}
+
+	if (d[i] == -1) 
+	  checksum += n;
+	else
+	  checksum += d[i];
+  }
+
+  cout <<max_depth << " "<< checksum<<endl;
+}
+
+
+
+int main(){
+  int n;
+  int m;
+  int r;
+  
+
+  string string_n;
+  getline(cin, string_n);
+  vector<string> tokens;
+  istringstream iss(string_n);
+  copy(istream_iterator<string>(iss),
+	   istream_iterator<string>(),
+	   back_inserter<vector<string> >(tokens));
+  
+  n = atoi(tokens[0].c_str());
+  m = atoi(tokens[1].c_str());
+  r = atoi(tokens[2].c_str());
+  
+
+  vector<vector<int> > tau(n + 1);
+  
+
+  for (int i = 0; i < m; i++) {
+
+	string temp;
+	vector<string> tokenized;
+	getline(cin, temp);
+
+	stringstream iss(temp);
+	copy(istream_iterator<string>(iss),
+		 istream_iterator<string>(),
+		 back_inserter<vector<string> >(tokenized));
+
+	int u = atoi(tokenized[0].c_str());
+	int v = atoi(tokenized[1].c_str());
+
+	tau[u].push_back(v);
+  }
+
+  for (int j = 0; j < r ; j++) {
+	string source_string;
+	getline(cin, source_string);
+	int source_index = atoi(source_string.c_str());
+	
+	serial_bfs(source_index, n, tau);
+
+  }
+  
+
+
+  
+}
+
