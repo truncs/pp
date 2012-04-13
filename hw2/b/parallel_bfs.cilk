@@ -65,8 +65,9 @@ void parallel_bfs(int source_index, int n, vector<vector<int> > & tau) {
 	}
 	 parallel_bfs_thread(*qin, *qout, P -1, d, tau);
 	 cilk_sync;
+
+	 delete(qin);
 	 qin = qout;
-	 delete(qout);
 	 qout = new BfsQueue(P, NSEG);
   }
 
