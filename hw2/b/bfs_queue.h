@@ -15,7 +15,6 @@ using namespace std;
 class BfsQueue {
   vector<queue<int> > queues;
   int nseg;
-  int size;
   int p;
   int seg;
   cilk::mutex m;

@@ -16,7 +16,9 @@
 using namespace std;
 
 
-void parallel_bfs_thread(BfsQueue& qin, BfsQueue& qout, int p, vector<int> & d, vector<vector<int> > & tau) {
+void parallel_bfs_thread(BfsQueue& qin, BfsQueue& qout, int p, vector<int> & d,
+						 vector<vector<int> > & tau) {
+  
   vector<int> * S;
   while ((S = qin.nextSegment()) != NULL) {
 	for (int i = 0; i < S->size(); i++) {

@@ -39,7 +39,7 @@ void BfsQueue::set_segment_size() {
 
 vector<int> *  BfsQueue::nextSegment() {
 
-  // TODO : locking stuff
+  size =getSize();
   m.lock();
   if (size > 0) {
 	for (int i = 0; i <p; i++) {
