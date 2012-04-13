@@ -47,7 +47,7 @@ vector<int> *  BfsQueue::nextSegment() {
         //  Decrement the counter
 		int k = min((int)queues[i].size(), seg);
 		for (int j = 0; j <= k; j++) {
-		  vector<int> S = new vector<int>();
+		  vector<int> * S = new vector<int>();
 		  S.push_back(queues[i].front());
 		  queues[i].pop();
 		  // TODO remember to free S

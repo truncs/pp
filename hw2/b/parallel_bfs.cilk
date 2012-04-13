@@ -18,7 +18,7 @@ using namespace std;
 
 void parallel_bfs_thread(BfsQueue& qin, BfsQueue& qout, int p, vector<int> & d, vector<vector<int> > & tau) {
   vector<int> * S;
-  while ((S = qin.getSegment()) != NULL) {
+  while ((S = qin.nextSegment()) != NULL) {
 	for (int i = 0; i < S->size(); i++) {
 	  int u = S->at(i);
 	  for (int j = 0; j < tau[u].size(); j++) {
@@ -89,7 +89,7 @@ void parallel_bfs(int source_index, int n, vector<vector<int> > & tau) {
 
 
 
-int main(){
+int cilk_main(){
   int n;
   int m;
   int r;
@@ -137,7 +137,8 @@ int main(){
 
   }
   
-
+  
+  return 0;
 
   
 }
