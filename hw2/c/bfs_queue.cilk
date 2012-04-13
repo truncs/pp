@@ -39,9 +39,18 @@ void BfsQueue::enque(int i, int value) {
 	// times
 	
 	if (flags[value] == -1) {
+	  
+#ifdef DEBUG
+	  cout << i<<" Test"<<endl;
+#endif
 	  flags[value] = i;
 	  
 	  if (flags[value] == i) {
+#ifdef DEBUG
+		cout << i<<" Test 2"endl;
+#endif
+
+		cout<<i<<endl;
 		queues[i].push(value);
 	  }
 	}
