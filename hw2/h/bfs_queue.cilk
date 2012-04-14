@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <algorithm>
 #include <cilk.h>
+#include <time.h>
+#include <math.h>
 #include "bfs_queue.h"
 
 
@@ -37,35 +39,39 @@ void BfsQueue::set_segment_size() {
   seg = temp == 0 ? size : temp;
 }
 
-vector<int> *  BfsQueue::nextSegment() {
 
-  int  size =getSize();
-  m.lock();
-  if (size > 0) {
-	for (int i = 0; i <p; i++) {
-	  if (!queues[i].empty()) {
-   
-		int k = min((int)queues[i].size(), seg);
-		for (int j = 0; j <= k; j++) {
-		  vector<int> * S = new vector<int>();
-		  S->push_back(queues[i].front());
-		  queues[i].pop();
-		  // TODO remember to free S
-		  m.unlock();
-		  return S;
-		}
-		
+int BfsQueue :: deque(int p) {
 
-	  }
-	}
+  if (!queues[i].empty()) {
+	// Get the vertices from the processor's queue
+	int u = queues[i].front();
+	queues[i].pop_front();
+	return u;
   }
+  else  {
+	// Steal 
+	srand(time(NULL));
+	
+	// clogp attempts, if we do not hit a usable queue 
+	// in these many times then probably the queues 
+	// are empty
+	int attempts = log10(p) / log10(2);
 
-  m.unlock();
-  return NULL;
 
+	for (int i = 0 ; i < attempts; i++) {
+	  int proc_id = rand() % p;
+	  if (!queues[proc_id].size()) {
+		// We can steal from this queue
+		int u = queues[proc_id] .back();
+		queues[proc_id].pop_back();
+		return u;
+	  }
+	  
+	
+	}
+	return 0;
 }
-
-
+  
 int BfsQueue::getSize() {
 	int n = 0;
 

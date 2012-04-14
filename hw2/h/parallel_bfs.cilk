@@ -19,26 +19,19 @@ using namespace std;
 void parallel_bfs_thread(BfsQueue& qin, BfsQueue& qout, int p, vector<int> & d,
 						 vector<vector<int> > & tau) {
   
-  vector<int> * S;
-  while ((S = qin.nextSegment()) != NULL) {
-	for (int i = 0; i < S->size(); i++) {
-	  int u = S->at(i);
-	  for (int j = 0; j < tau[u].size(); j++) {
+  int u;
+  while ((u = qin.deque(p)) != 0) {
 
-		int v = tau[u][j];
 
-		if (d[v] == -1) {
-		  d[v] = d[u] + 1;
-		  qout.enque(p, v);
-		}
-
+	for (int j = 0; j < tau[u].size(); j++) {
+	  
+	  int v = tau[u][j];
+	  
+	  if (d[v] == -1) {
+		d[v] = d[u] + 1;
+		qout.enque(p, v);
 	  }
-
-
 	}
-	
-	delete(S);
-
   }
 }
 

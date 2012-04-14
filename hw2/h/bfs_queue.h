@@ -7,13 +7,14 @@
 #include <queue>
 #include <cstdlib>
 #include <algorithm>
+#include <deque>
 #include <cilk.h>
 #include <cilk_mutex.h>
 
 using namespace std;
 
 class BfsQueue {
-  vector<queue<int> > queues;
+  vector<deque<int> > queues;
   int nseg;
   int p;
   int seg;
@@ -22,7 +23,7 @@ class BfsQueue {
 public:
   BfsQueue(int p, int n);
   void enque(int i, int value);
-  vector<int> * nextSegment();
+  vector<int> * nextSegment(int p);
   void set_segment_size();
   int getSize();
 };

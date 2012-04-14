@@ -2,7 +2,7 @@
 
 CILKPP  = cilk++
 LIBARG  = -O1 -g -lcilkutil
-TARGET  = parallel_bfsb
+TARGET  = parallel_bfsh
 SRC     = parallel_bfs.cilk bfs_queue.cilk
 
 all: $(TARGET)
