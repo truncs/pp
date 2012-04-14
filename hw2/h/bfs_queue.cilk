@@ -10,6 +10,7 @@
 #include <cilk.h>
 #include <time.h>
 #include <math.h>
+#include <deque>
 #include "bfs_queue.h"
 
 
