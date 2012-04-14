@@ -1,0 +1,78 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <queue>
+#include <cstdlib>
+#include <algorithm>
+#include <cilk.h>
+#include "bfs_queue.h"
+
+
+using namespace std;
+
+BfsQueue :: BfsQueue(int procs, int n ) {
+
+  nseg = n;
+  p = procs;
+  
+
+  for (int i = 0; i < p; i++) {
+	queues.push_back(queue<int>());
+  }
+}
+
+void BfsQueue::enque(int i, int value) {
+  if (i < p) {
+	queues[i].push(value);
+		
+  }
+}
+
+void BfsQueue::set_segment_size() {
+  int size = getSize();
+  int temp = nseg / size;
+  seg = temp == 0 ? size : temp;
+}
+
+vector<int> *  BfsQueue::nextSegment() {
+
+  int  size =getSize();
+  m.lock();
+  if (size > 0) {
+	for (int i = 0; i <p; i++) {
+	  if (!queues[i].empty()) {
+   
+		int k = min((int)queues[i].size(), seg);
+		for (int j = 0; j <= k; j++) {
+		  vector<int> * S = new vector<int>();
+		  S->push_back(queues[i].front());
+		  queues[i].pop();
+		  // TODO remember to free S
+		  m.unlock();
+		  return S;
+		}
+		
+
+	  }
+	}
+  }
+
+  m.unlock();
+  return NULL;
+
+}
+
+
+int BfsQueue::getSize() {
+	int n = 0;
+
+	for (int i = 0; i < p; i++) {
+		n += 	queues[i].size();
+	}
+
+	return n;
+}
+
