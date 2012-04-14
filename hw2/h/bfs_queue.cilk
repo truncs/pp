@@ -28,7 +28,7 @@ BfsQueue :: BfsQueue(int procs, int n ) {
 
 void BfsQueue::enque(int i, int value) {
   if (i < p) {
-	queues[i].push(value);
+	queues[i].push_back(value);
 		
   }
 }
@@ -42,10 +42,10 @@ void BfsQueue::set_segment_size() {
 
 int BfsQueue :: deque(int p) {
 
-  if (!queues[i].empty()) {
+  if (!queues[p].empty()) {
 	// Get the vertices from the processor's queue
-	int u = queues[i].front();
-	queues[i].pop_front();
+	int u = queues[p].front();
+	queues[p].pop_front();
 	return u;
   }
   else  {
@@ -70,9 +70,10 @@ int BfsQueue :: deque(int p) {
 	
 	}
 	return 0;
+  }
 }
   
-int BfsQueue::getSize() {
+ int BfsQueue::getSize() {
 	int n = 0;
 
 	for (int i = 0; i < p; i++) {

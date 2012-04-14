@@ -23,7 +23,7 @@ class BfsQueue {
 public:
   BfsQueue(int p, int n);
   void enque(int i, int value);
-  vector<int> * nextSegment(int p);
+  int deque(int p);
   void set_segment_size();
   int getSize();
 };
