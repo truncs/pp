@@ -22,9 +22,17 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 	  else
 		gt[i] = 0;
 	}
+
   
-  vector<int> new_lt(n);
-  vector<int> new_gt(n);
+
+  vector<int> new_lt(n - 1);
+  vector<int> new_gt(n - 1);
+
+  
+  // TODO Does this make sense 
+  
+  lt.push_front(0);
+  gt.push_front(0);
   
   par_prefix_sum(&lt, &new_lt);
   par_prefix_sum(&gt, &new_gt);
