@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -92,7 +96,7 @@ void par_randomized_qsort(vector<long>& A, int q, int r) {
 	for (long j = q + 1; j <= r; ++j)
 	  {
 		long key = A[j];
-//        cout<<"key: "<<key<<endl;
+		//        cout<<"key: "<<key<<endl;
 		long i = j - 1;
 		
 		while (i >= q && A[i] > key) {
@@ -111,12 +115,12 @@ void par_randomized_qsort(vector<long>& A, int q, int r) {
 	  int rand_number = q  + (rand() % (n));
 	  long x = A[rand_number];
 	  k = par_partition(A, q, r, x);
-     // cout<<"Testing on pivot "<<A[k]<<endl;
-     // for(int i = 0; i < A.size(); i++) {
-     //   cout<<A[i]<<endl;
-     // }
+	  // cout<<"Testing on pivot "<<A[k]<<endl;
+	  // for(int i = 0; i < A.size(); i++) {
+	  //   cout<<A[i]<<endl;
+	  // }
       
-    //    cout<<"-----------"<<endl;
+	  //    cout<<"-----------"<<endl;
 	}
     //cout<<"Found a good pivot"<<A[k]<<endl;	
 	par_randomized_qsort(A, q, k - 1);
@@ -131,13 +135,33 @@ void par_randomized_qsort(vector<long>& A, int q, int r) {
 
 int main(int argc, char *argv[]) {
   
+  ifstream myfile (argv[1]);
+  long n = 0;
+  string line;
+  vector<long> a;
 
-    long arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
-    vector<long> a (arr, arr + 10);
-    par_randomized_qsort(a, 0, 9);
-    for(long i = 0; i < 10; i++) {
-        cout<<a[i]<<endl;
-    }
-    //cout<<par_partition(a, 0,9, 8)<<endl; 
-    return 0;
+  if (myfile.is_open()) {
+	if (myfile.good()) {
+	  long i = 0;
+	  while(!myfile.eof()) {
+		if (i == 0) {
+		  getline(myfile, line);
+		  n = atol(line.c_str());
+		}
+		else {
+		  getline(myfile, line);
+		  a.push_back(atol(line.c_str()));
+		}
+		i++;
+	  }
+	}
+  }
+
+  long arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
+  par_randomized_qsort(a, 0, 9);
+  for(long i = 0; i < 10; i++) {
+	cout<<a[i]<<endl;
+  }
+  //cout<<par_partition(a, 0,9, 8)<<endl; 
+  return 0;
 }
