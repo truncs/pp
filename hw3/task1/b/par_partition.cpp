@@ -71,7 +71,7 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 	  if (B[i] < x)
 		A[q + new_lt[i] - 1] = B[i];
 	  else if (B[i] > x)
-		A[k + gt[i]] = B[i];
+		A[k + new_gt[i]] = B[i];
 	}
 
   return k;
@@ -82,6 +82,9 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 int main() {
     int arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
     vector<int> a (arr, arr + 10);
-    cout<<par_partition(a, 0,9, 8)<<endl; 
+    cout<<"rank: "<<par_partition(a, 0,9, 8)<<endl; 
+    for(int i = 0; i < 10; i++) {
+        cout<<a[i]<<endl;
+    }
     return 0;
 }
