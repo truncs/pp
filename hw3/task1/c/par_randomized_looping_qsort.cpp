@@ -5,22 +5,22 @@
 using namespace std;
 
 
-void prefix_sum(vector<int> & x, vector<int>& s) {
+void prefix_sum(vector<long> & x, vector<long>& s) {
 
-  int n = x.size();
-  vector<int> y(n/2);
+  long n = x.size();
+  vector<long> y(n/2);
 
   if (n == 1)
 	s[0] = x[0];
 
   else {
-	for (int i = 0; i < n/2; ++i)
+	for (long i = 0; i < n/2; ++i)
 	  {
 		y[i] = x[2*i] + x[2*i + 1];
 	  }
-	vector<int> z(n/2);
+	vector<long> z(n/2);
 	prefix_sum(y, z);
-	for (int i = 0; i < n; ++i)
+	for (long i = 0; i < n; ++i)
 	  {
 		if (i == 0)
 		  s[0] = x[0];
@@ -37,13 +37,13 @@ void prefix_sum(vector<int> & x, vector<int>& s) {
 
 
 
-int par_partition(vector<int>& A, int q, int r, int x) {
-  int n = r - q + 1;
+long par_partition(vector<long>& A, long q, long r, long x) {
+  long n = r - q + 1;
   if (n == 1)
 	return q;
 
-  vector<int> B(n), lt(n), gt(n);
-  for (int i = 0; i < n; ++i)
+  vector<long> B(n), lt(n), gt(n);
+  for (long i = 0; i < n; ++i)
 	{
 	  B[i] = A[q + i];
 	  if (B[i] < x)
@@ -59,16 +59,16 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 
   
 
-  vector<int> new_lt(n);
-  vector<int> new_gt(n);
+  vector<long> new_lt(n);
+  vector<long> new_gt(n);
   
   prefix_sum(lt, new_lt);
   prefix_sum(gt, new_gt);
 
-  int k = q + new_lt[n - 1];
+  long k = q + new_lt[n - 1];
   A[k] = x;
 
-  for (int i = 0; i < n; ++i)
+  for (long i = 0; i < n; ++i)
 	{
 	  if (B[i] < x)
 		A[q + new_lt[i] - 1] = B[i];
@@ -82,18 +82,18 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 
 
 
-void par_randomized_qsort(vector<int>& A, int q, int r) {
+void par_randomized_qsort(vector<long>& A, int q, int r) {
   //cout<<"r :"<<r<<" q: "<<q<<endl;
-  int n = r - q + 1;
+  long n = r - q + 1;
   if (n <= 5) {
 	// Insertion sort
 	// Reference CLRS 2.1
     //cout<<"Insertion Sort with n :"<<n<<endl;	
-	for (int j = q + 1; j <= r; ++j)
+	for (long j = q + 1; j <= r; ++j)
 	  {
-		int key = A[j];
+		long key = A[j];
 //        cout<<"key: "<<key<<endl;
-		int i = j - 1;
+		long i = j - 1;
 		
 		while (i >= q && A[i] > key) {
 		  A[i + 1] = A[i];
@@ -106,10 +106,10 @@ void par_randomized_qsort(vector<int>& A, int q, int r) {
 
   }
   else {
-	int k = 0;
+	long k = 0;
 	while (max(r - k, k - q) > 3*n/4) {
 	  int rand_number = q  + (rand() % (n));
-	  int x = A[rand_number];
+	  long x = A[rand_number];
 	  k = par_partition(A, q, r, x);
      // cout<<"Testing on pivot "<<A[k]<<endl;
      // for(int i = 0; i < A.size(); i++) {
@@ -129,12 +129,13 @@ void par_randomized_qsort(vector<int>& A, int q, int r) {
 
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  
 
-    int arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
-    vector<int> a (arr, arr + 10);
+    long arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
+    vector<long> a (arr, arr + 10);
     par_randomized_qsort(a, 0, 9);
-    for(int i = 0; i < 10; i++) {
+    for(long i = 0; i < 10; i++) {
         cout<<a[i]<<endl;
     }
     //cout<<par_partition(a, 0,9, 8)<<endl; 
