@@ -3,12 +3,44 @@
 
 using namespace std;
 
+void prefix_sum(vector<int> & x, vector<int>& s) {
+
+  int n = x.size();
+  vector<int> y(n/2);
+
+  if (n == 1)
+	s[0] = x[0];
+
+  else {
+	for (int i = 0; i < n/2; ++i)
+	  {
+		y[i] = x[2*i] + x[2*i + 1];
+	  }
+	vector<int> z(n/2);
+	prefix_sum(y, z);
+	for (int i = 0; i < n; ++i)
+	  {
+		if (i == 0)
+		  s[0] = x[0];
+		else if (i % 2 != 0)
+		  s[i] = z[(i - 1)/2];
+		else
+		  s[i] = z[(i - 2) / 2] + x[i];
+			
+	  }
+  }
+
+  return;
+}
+
+
+
 int par_partition(vector<int>& A, int q, int r, int x) {
   int n = r - q + 1;
   if (n == 1)
 	return q;
 
-  vector<int> B(n -1), lt(n - 1), gt(n - 1);
+  vector<int> B(n), lt(n), gt(n);
   for (int i = 0; i < n; ++i)
 	{
 	  B[i] = A[q + i];
@@ -25,21 +57,13 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 
   
 
-  vector<int> new_lt(n - 1);
-  vector<int> new_gt(n - 1);
+  vector<int> new_lt(n);
+  vector<int> new_gt(n);
+  
+  prefix_sum(lt, new_lt);
+  prefix_sum(gt, new_gt);
 
-  
-  // TODO Does this make sense 
-  
-  lt.push_front(0);
-  gt.push_front(0);
-  
-  par_prefix_sum(&lt, &new_lt);
-  par_prefix_sum(&gt, &new_gt);
-
-  
-
-  k = q + new_lt[n - 1];
+  int k = q + new_lt[n - 1];
   A[k] = x;
 
   for (int i = 0; i < n; ++i)
@@ -52,4 +76,12 @@ int par_partition(vector<int>& A, int q, int r, int x) {
 
   return k;
 
+}
+
+
+int main() {
+    int arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
+    vector<int> a (arr, arr + 10);
+    cout<<par_partition(a, 0,9, 8)<<endl; 
+    return 0;
 }
