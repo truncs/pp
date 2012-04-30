@@ -89,7 +89,7 @@ long par_partition(vector<long>& A, long q, long r, long x) {
 void par_randomized_qsort(vector<long>& A, int q, int r) {
   //cout<<"r :"<<r<<" q: "<<q<<endl;
   long n = r - q + 1;
-  if (n <= 5) {
+  if (n <= 100) {
 	// Insertion sort
 	// Reference CLRS 2.1
     //cout<<"Insertion Sort with n :"<<n<<endl;	
