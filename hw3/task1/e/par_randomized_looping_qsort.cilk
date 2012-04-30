@@ -87,7 +87,7 @@ long par_partition(vector<long>& A, long q, long r, long x) {
 
 // CLRS  - Serial Paritioning as mentioned on page 171 
 // of the 3rd edition.
-void serial_partition(vector<long> & A, int p, int r) {
+long serial_partition(vector<long> & A, int p, int r) {
   long x = A[r];
   long i = p - 1;
   for (long j = p; j < r; ++j)
