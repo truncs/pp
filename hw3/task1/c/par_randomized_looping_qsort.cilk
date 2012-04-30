@@ -157,9 +157,9 @@ int cilk_main(int argc, char *argv[]) {
 	}
   }
 
-  long arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
-  par_randomized_qsort(a, 0, 9);
-  for(long i = 0; i < 10; i++) {
+  //long arr[] = {9, 5, 7, 11, 1, 3, 8, 14, 4, 21};
+  par_randomized_qsort(a, 0, n -1);
+  for(long i = 0; i < n; i++) {
 	cout<<a[i]<<endl;
   }
   //cout<<par_partition(a, 0,9, 8)<<endl; 
