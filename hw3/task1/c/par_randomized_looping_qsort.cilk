@@ -18,13 +18,13 @@ void prefix_sum(vector<long> & x, vector<long>& s) {
 	s[0] = x[0];
 
   else {
-	for (long i = 0; i < n/2; ++i)
+	cilk_for (long i = 0; i < n/2; ++i)
 	  {
 		y[i] = x[2*i] + x[2*i + 1];
 	  }
 	vector<long> z(n/2);
 	prefix_sum(y, z);
-	for (long i = 0; i < n; ++i)
+	cilk_for (long i = 0; i < n; ++i)
 	  {
 		if (i == 0)
 		  s[0] = x[0];
@@ -47,7 +47,7 @@ long par_partition(vector<long>& A, long q, long r, long x) {
 	return q;
 
   vector<long> B(n), lt(n), gt(n);
-  for (long i = 0; i < n; ++i)
+  cilk_for (long i = 0; i < n; ++i)
 	{
 	  B[i] = A[q + i];
 	  if (B[i] < x)
@@ -72,7 +72,7 @@ long par_partition(vector<long>& A, long q, long r, long x) {
   long k = q + new_lt[n - 1];
   A[k] = x;
 
-  for (long i = 0; i < n; ++i)
+  cilk_for (long i = 0; i < n; ++i)
 	{
 	  if (B[i] < x)
 		A[q + new_lt[i] - 1] = B[i];
@@ -123,9 +123,9 @@ void par_randomized_qsort(vector<long>& A, int q, int r) {
 	  //    cout<<"-----------"<<endl;
 	}
     //cout<<"Found a good pivot"<<A[k]<<endl;	
-	par_randomized_qsort(A, q, k - 1);
+	cilk_spawn par_randomized_qsort(A, q, k - 1);
 	par_randomized_qsort(A, k + 1, r);
-	
+	sync;
 	
   }
 	
@@ -133,7 +133,7 @@ void par_randomized_qsort(vector<long>& A, int q, int r) {
 
 }
 
-int main(int argc, char *argv[]) {
+int cilk_main(int argc, char *argv[]) {
   
   ifstream myfile (argv[1]);
   long n = 0;
