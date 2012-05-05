@@ -41,7 +41,7 @@ void prefix_sum(vector<long> & x, vector<long>& s) {
 
 
 
-long par_partition(vector<long>& A, long q, long r, long x) {
+long par_partition(long * A, long q, long r, long x) {
   long n = r - q + 1;
   if (n == 1)
 	return q;
